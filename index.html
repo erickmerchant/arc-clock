@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Arc Clock</title>
+		<style>
+			@property --time {
+				syntax: "<percentage>";
+				inherits: true;
+				initial-value: 0%;
+			}
+
+			@keyframes initial-cycle {
+				0% {
+					--time: var(--initial-time);
+				}
+
+				100% {
+					--time: 100%;
+				}
+			}
+
+			@keyframes cycle {
+				0% {
+					--time: 0%;
+				}
+
+				100% {
+					--time: 100%;
+				}
+			}
+
+			arc-clock {
+				grid-template-columns: var(--template);
+				grid-template-rows: var(--template);
+				gap: var(--gap);
+				--color: var(--hours-color);
+				--template: repeat(3, var(--line-width)) auto
+					repeat(3, var(--line-width));
+				--duration: 86400s;
+				--initial-duration: var(--hours-initial-duration);
+				--initial-time: var(--hours-initial-time);
+
+				&,
+				&::before,
+				&::after {
+					border-radius: 100%;
+					display: grid;
+					aspect-ratio: 1;
+					background: radial-gradient(
+							closest-side,
+							white,
+							white calc(100% - var(--line-width)),
+							transparent calc(100% - var(--line-width)),
+							transparent
+						),
+						conic-gradient(
+							var(--color),
+							var(--color) var(--time),
+							white var(--time)
+						);
+					animation-timing-function: linear;
+					animation-name: initial-cycle, cycle;
+					animation-duration: var(--initial-duration), var(--duration);
+					animation-delay: 0s, var(--initial-duration);
+					animation-iteration-count: 1, infinite;
+				}
+
+				&::before,
+				&::after {
+					content: "";
+					grid-column: var(--col-row);
+					grid-row: var(--col-row);
+				}
+
+				&::before {
+					--color: var(--minutes-color);
+					--col-row: 2 / -2;
+					--duration: 3600s;
+					--initial-duration: var(--minutes-initial-duration);
+					--initial-time: var(--minutes-initial-time);
+				}
+
+				&::after {
+					--color: var(--seconds-color);
+					--col-row: 3 / -3;
+					--duration: 60s;
+					--initial-duration: var(--seconds-initial-duration);
+					--initial-time: var(--seconds-initial-time);
+				}
+			}
+
+			@layer user {
+				* {
+					box-sizing: border-box;
+					margin: 0;
+					padding: 0;
+				}
+
+				html,
+				body {
+					height: 100%;
+				}
+
+				body {
+					display: grid;
+					place-content: center;
+				}
+
+				arc-clock {
+					width: 30rem;
+					aspect-ratio: 1;
+					--line-width: 2em;
+					--gap: 0.25em;
+					--hours-color: oklab(90% 0.3 0.2);
+					--minutes-color: oklab(90% -0.1 0.4);
+					--seconds-color: oklab(90% -0.1 -0.4);
+				}
+			}
+		</style>
+		<script type="module">
+			const DURATIONS = {
+				hours: 86_400,
+				minutes: 3_600,
+				seconds: 60,
+			};
+
+			class ArcClock extends HTMLElement {
+				constructor() {
+					super();
+
+					let date = new Date();
+					let hours = date.getHours();
+					let minutes = date.getMinutes();
+					let seconds = date.getSeconds();
+					let percents = {
+						seconds: (100 / 60) * seconds,
+						minutes: (100 / DURATIONS.minutes) * (minutes * 60 + seconds),
+						hours:
+							(100 / DURATIONS.hours) *
+							(hours * 60 * 60 + minutes * 60 + seconds),
+					};
+
+					for (let units of ["hours", "minutes", "seconds"]) {
+						this.style.setProperty(
+							`--${units}-initial-time`,
+							`${percents[units]}%`
+						);
+						this.style.setProperty(
+							`--${units}-initial-duration`,
+							`${Math.round(
+								((100 - percents[units]) / 100) * DURATIONS[units]
+							)}s`
+						);
+					}
+				}
+			}
+
+			customElements.define("arc-clock", ArcClock);
+		</script>
+	</head>
+	<body>
+		<arc-clock></arc-clock>
+	</body>
+</html>
