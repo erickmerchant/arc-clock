@@ -34,8 +34,7 @@
 				grid-template-rows: var(--template);
 				gap: var(--gap);
 				--color: var(--hours-color);
-				--template: repeat(3, var(--line-width)) auto
-					repeat(3, var(--line-width));
+				--template: repeat(3, var(--size)) auto repeat(3, var(--size));
 				--duration: 86400s;
 				--initial-duration: var(--hours-initial-duration);
 				--initial-time: var(--hours-initial-time);
@@ -49,8 +48,8 @@
 					background: radial-gradient(
 							closest-side,
 							white,
-							white calc(100% - var(--line-width)),
-							transparent calc(100% - var(--line-width)),
+							white calc(100% - var(--size)),
+							transparent calc(100% - var(--size)),
 							transparent
 						),
 						conic-gradient(
@@ -98,7 +97,7 @@
 
 				html,
 				body {
-					height: 100%;
+					block-size: 100%;
 				}
 
 				body {
@@ -107,9 +106,9 @@
 				}
 
 				arc-clock {
-					width: 30rem;
+					inline-size: 30rem;
 					aspect-ratio: 1;
-					--line-width: 2em;
+					--size: 2em;
 					--gap: 0.25em;
 					--hours-color: oklab(90% 0.3 0.2);
 					--minutes-color: oklab(90% -0.1 0.4);
