@@ -117,18 +117,26 @@
 			}
 		</style>
 		<script type="module">
-			const DURATIONS = {
-				hours: 86_400,
-				minutes: 3_600,
-				seconds: 60,
-			};
-
 			class ArcClock extends HTMLElement {
 				constructor() {
 					super();
 
+					let totalHours = Number(this.getAttribute("total-hours"));
+
+					if (!totalHours || Number.isNaN(totalHours)) {
+						totalHours = 24;
+					}
+
+					let DURATIONS = {
+						hours: 3_600 * totalHours,
+						minutes: 3_600,
+						seconds: 60,
+					};
 					let date = new Date();
 					let hours = date.getHours();
+
+					hours %= totalHours;
+
 					let minutes = date.getMinutes();
 					let seconds = date.getSeconds();
 					let percents = {
@@ -158,6 +166,6 @@
 		</script>
 	</head>
 	<body>
-		<arc-clock></arc-clock>
+		<arc-clock total-hours="12"></arc-clock>
 	</body>
 </html>
