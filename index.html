@@ -128,36 +128,23 @@
 						totalHours = 24;
 					}
 
-					let DURATIONS = {
-						hours: 3_600 * totalHours,
-						minutes: 3_600,
-						seconds: 60,
-					};
 					let date = new Date();
-					let hours = date.getHours();
-
-					hours %= totalHours;
-
+					let hours = date.getHours() % totalHours;
 					let minutes = date.getMinutes();
 					let seconds = date.getSeconds();
-					let percents = {
-						seconds: (100 / 60) * seconds,
-						minutes: (100 / DURATIONS.minutes) * (minutes * 60 + seconds),
-						hours:
-							(100 / DURATIONS.hours) *
-							(hours * 60 * 60 + minutes * 60 + seconds),
+					let arcs = {
+						hours: [3_600 * totalHours, hours * 3_600 + minutes * 60 + seconds],
+						minutes: [3_600, minutes * 60 + seconds],
+						seconds: [60, seconds],
 					};
 
-					for (let units of ["hours", "minutes", "seconds"]) {
-						this.style.setProperty(
-							`--${units}-initial-time`,
-							`${percents[units]}%`
-						);
+					for (let [units, [total, progress]] of Object.entries(arcs)) {
+						let percentage = (100 / total) * progress;
+
+						this.style.setProperty(`--${units}-initial-time`, `${percentage}%`);
 						this.style.setProperty(
 							`--${units}-initial-duration`,
-							`${Math.round(
-								((100 - percents[units]) / 100) * DURATIONS[units]
-							)}s`
+							`${Math.round(((100 - percentage) / 100) * total)}s`
 						);
 					}
 				}
