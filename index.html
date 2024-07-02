@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<title>Arc Clock</title>
@@ -119,9 +119,7 @@
 		</style>
 		<script type="module">
 			class ArcClock extends HTMLElement {
-				constructor() {
-					super();
-
+				connectedCallback() {
 					let totalHours = Number(this.getAttribute("total-hours"));
 
 					if (!totalHours || Number.isNaN(totalHours)) {
