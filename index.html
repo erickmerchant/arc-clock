@@ -2,6 +2,39 @@
 <html>
 	<head>
 		<title>Arc Clock</title>
+		<script type="module">
+			class ArcClock extends HTMLElement {
+				connectedCallback() {
+					let totalHours = Number(this.getAttribute("total-hours"));
+
+					if (!totalHours || Number.isNaN(totalHours)) {
+						totalHours = 24;
+					}
+
+					let date = new Date();
+					let hours = date.getHours() % totalHours;
+					let minutes = date.getMinutes();
+					let seconds = date.getSeconds();
+					let arcs = {
+						hours: [3_600 * totalHours, hours * 3_600 + minutes * 60 + seconds],
+						minutes: [3_600, minutes * 60 + seconds],
+						seconds: [60, seconds],
+					};
+
+					for (let [units, [total, progress]] of Object.entries(arcs)) {
+						let percentage = (100 / total) * progress;
+
+						this.style.setProperty(`--${units}-initial-time`, `${percentage}%`);
+						this.style.setProperty(
+							`--${units}-initial-duration`,
+							`${Math.round(((100 - percentage) / 100) * total)}s`
+						);
+					}
+				}
+			}
+
+			customElements.define("arc-clock", ArcClock);
+		</script>
 		<style>
 			@property --time {
 				syntax: "<percentage>";
@@ -117,39 +150,6 @@
 				}
 			}
 		</style>
-		<script type="module">
-			class ArcClock extends HTMLElement {
-				connectedCallback() {
-					let totalHours = Number(this.getAttribute("total-hours"));
-
-					if (!totalHours || Number.isNaN(totalHours)) {
-						totalHours = 24;
-					}
-
-					let date = new Date();
-					let hours = date.getHours() % totalHours;
-					let minutes = date.getMinutes();
-					let seconds = date.getSeconds();
-					let arcs = {
-						hours: [3_600 * totalHours, hours * 3_600 + minutes * 60 + seconds],
-						minutes: [3_600, minutes * 60 + seconds],
-						seconds: [60, seconds],
-					};
-
-					for (let [units, [total, progress]] of Object.entries(arcs)) {
-						let percentage = (100 / total) * progress;
-
-						this.style.setProperty(`--${units}-initial-time`, `${percentage}%`);
-						this.style.setProperty(
-							`--${units}-initial-duration`,
-							`${Math.round(((100 - percentage) / 100) * total)}s`
-						);
-					}
-				}
-			}
-
-			customElements.define("arc-clock", ArcClock);
-		</script>
 	</head>
 	<body>
 		<arc-clock total-hours="12"></arc-clock>
