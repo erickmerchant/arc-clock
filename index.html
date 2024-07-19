@@ -2,7 +2,18 @@
 <html>
 	<head>
 		<title>Arc Clock</title>
+		<script type="importmap">
+			{
+				"imports": {
+					"vanilla-kit": "/vendor/vanilla-kit/lib.js"
+				}
+			}
+		</script>
 		<script type="module">
+			import {html, $} from "vanilla-kit";
+
+			let {div} = html;
+
 			class ArcClock extends HTMLElement {
 				connectedCallback() {
 					let totalHours = Number(this.getAttribute("total-hours"));
@@ -15,14 +26,15 @@
 					let seconds = date.getSeconds();
 					let minutes = date.getMinutes() * 60 + seconds;
 					let hours = (date.getHours() % totalHours) * 3_600 + minutes;
-					let div = document.createElement("div");
 
-					div.style.setProperty(`--hours-duration`, `${totalHours * 3_600}s`);
-					div.style.setProperty(`--hours-delay`, `${-1 * hours}s`);
-					div.style.setProperty(`--minutes-delay`, `${-1 * minutes}s`);
-					div.style.setProperty(`--seconds-delay`, `${-1 * seconds}s`);
-
-					this.append(div);
+					$(this).children(
+						div().styles({
+							"--hours-duration": `${totalHours * 3_600}s`,
+							"--hours-delay": `${-1 * hours}s`,
+							"--minutes-delay": `${-1 * minutes}s`,
+							"--seconds-delay": `${-1 * seconds}s`,
+						})
+					);
 				}
 			}
 
