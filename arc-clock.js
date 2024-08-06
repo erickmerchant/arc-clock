@@ -3,7 +3,7 @@ class ArcClock extends HTMLElement {
 
 	static {
 		window.CSS.registerProperty({
-			name: "--arc-clock--time",
+			name: "--time",
 			syntax: "<percentage>",
 			inherits: true,
 			initialValue: "0%",
@@ -14,42 +14,42 @@ class ArcClock extends HTMLElement {
 		this.#sheet.replaceSync(`
 			@keyframes cycle {
 				0% {
-					--arc-clock--time: 0%;
+					--time: 0%;
 				}
 
 				100% {
-					--arc-clock--time: 100%;
+					--time: 100%;
 				}
 			}
 
 			:host {
 				grid-template-columns: var(--template);
 				grid-template-rows: var(--template);
-				gap: var(--arc-clock--gap);
-				--color: var(--arc-clock--hours-color);
-				--template: repeat(3, var(--arc-clock--size)) auto
-					repeat(3, var(--arc-clock--size));
+				gap: var(--gap);
+				--color: var(--hours-color);
+				--template: repeat(3, var(--size)) auto
+					repeat(3, var(--size));
 				--duration: var(--hours-duration);
 				--delay: var(--hours-delay);
 
 				&,
 				&::before,
 				&::after {
-					will-change: var(--arc-clock--time);
+					will-change: var(--time);
 					border-radius: 100%;
 					display: grid;
 					aspect-ratio: 1;
 					background: radial-gradient(
 							closest-side,
 							white,
-							white calc(100% - var(--arc-clock--size)),
-							oklab(0% 0 0 / 0) calc(100% - var(--arc-clock--size)),
+							white calc(100% - var(--size)),
+							oklab(0% 0 0 / 0) calc(100% - var(--size)),
 							oklab(0% 0 0 / 0)
 						),
 						conic-gradient(
 							var(--color),
-							var(--color) var(--arc-clock--time),
-							white var(--arc-clock--time)
+							var(--color) var(--time),
+							white var(--time)
 						);
 					animation-timing-function: linear;
 					animation-name: cycle;
@@ -66,14 +66,14 @@ class ArcClock extends HTMLElement {
 				}
 
 				&::before {
-					--color: var(--arc-clock--minutes-color);
+					--color: var(--minutes-color);
 					--col-row: 2 / -2;
 					--duration: 3600s;
 					--delay: var(--minutes-delay);
 				}
 
 				&::after {
-					--color: var(--arc-clock--seconds-color);
+					--color: var(--seconds-color);
 					--col-row: 3 / -3;
 					--duration: 60s;
 					--delay: var(--seconds-delay);
