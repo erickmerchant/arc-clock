@@ -22,7 +22,7 @@ class ArcClock extends HTMLElement {
 				}
 			}
 
-			:host {
+			div {
 				grid-template-columns: var(--template);
 				grid-template-rows: var(--template);
 				gap: var(--gap);
@@ -104,5 +104,7 @@ class ArcClock extends HTMLElement {
 		}`);
 
 		shadow.adoptedStyleSheets = [ArcClock.#sheet, instance];
+
+		shadow.append(document.createElement("div"));
 	}
 }
