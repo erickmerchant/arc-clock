@@ -17,6 +17,10 @@
 				block-size: 100%;
 			}
 
+			html {
+				color-scheme: light dark;
+			}
+
 			body {
 				display: grid;
 				place-content: center;
@@ -24,10 +28,12 @@
 			}
 
 			arc-clock {
-				inline-size: 30rem;
+				min-inline-size: min(30rem, 100svmin);
+				padding: 1em;
 				aspect-ratio: 1;
 				--size: 2em;
 				--gap: 0.25em;
+				--canvas: Canvas;
 				--hours-color: oklab(90% 0.3 0.2);
 				--minutes-color: oklab(90% -0.1 0.4);
 				--seconds-color: oklab(90% -0.1 -0.4);

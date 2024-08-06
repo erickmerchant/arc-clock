@@ -22,6 +22,14 @@ class ArcClock extends HTMLElement {
 				}
 			}
 
+			*,
+			:before,
+			:after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
 			div {
 				grid-template-columns: var(--template);
 				grid-template-rows: var(--template);
@@ -41,15 +49,15 @@ class ArcClock extends HTMLElement {
 					aspect-ratio: 1;
 					background: radial-gradient(
 							closest-side,
-							white,
-							white calc(100% - var(--size)),
+							var(--canvas),
+							var(--canvas) calc(100% - var(--size)),
 							oklab(0% 0 0 / 0) calc(100% - var(--size)),
 							oklab(0% 0 0 / 0)
 						),
 						conic-gradient(
 							var(--color),
 							var(--color) var(--time),
-							white var(--time)
+							var(--canvas) var(--time)
 						);
 					animation-timing-function: linear;
 					animation-name: cycle;
