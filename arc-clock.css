@@ -1,0 +1,68 @@
+@keyframes cycle {
+	0% {
+		--time: 0%;
+	}
+
+	100% {
+		--time: 100%;
+	}
+}
+
+*,
+:before,
+:after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+div {
+	grid-template-columns: var(--template);
+	grid-template-rows: var(--template);
+	gap: var(--gap);
+	--color: var(--hours-color);
+	--template: repeat(3, var(--size)) auto repeat(3, var(--size));
+	--duration: var(--hours-duration);
+	--delay: var(--hours-delay);
+
+	&,
+	&::before,
+	&::after {
+		will-change: var(--time);
+		border-radius: 100%;
+		display: grid;
+		aspect-ratio: 1;
+		background: radial-gradient(
+				closest-side,
+				var(--canvas) 0 calc(100% - var(--size)),
+				oklab(0% 0 0 / 0) calc(100% - var(--size))
+			),
+			conic-gradient(var(--color) 0 var(--time), var(--canvas) var(--time));
+		animation-timing-function: linear;
+		animation-name: cycle;
+		animation-duration: var(--duration);
+		animation-delay: var(--delay);
+		animation-iteration-count: infinite;
+	}
+
+	&::before,
+	&::after {
+		content: "";
+		grid-column: var(--col-row);
+		grid-row: var(--col-row);
+	}
+
+	&::before {
+		--color: var(--minutes-color);
+		--col-row: 2 / -2;
+		--duration: 3600s;
+		--delay: var(--minutes-delay);
+	}
+
+	&::after {
+		--color: var(--seconds-color);
+		--col-row: 3 / -3;
+		--duration: 60s;
+		--delay: var(--seconds-delay);
+	}
+}
