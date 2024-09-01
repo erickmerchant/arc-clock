@@ -1,10 +1,10 @@
 @keyframes cycle {
 	0% {
-		--time: 0%;
+		--arc-clock--time: 0%;
 	}
 
 	100% {
-		--time: 100%;
+		--arc-clock--time: 100%;
 	}
 }
 
@@ -28,7 +28,7 @@ div {
 	&,
 	&::before,
 	&::after {
-		will-change: var(--time);
+		will-change: var(--arc-clock--time);
 		border-radius: 100%;
 		display: grid;
 		aspect-ratio: 1;
@@ -37,7 +37,10 @@ div {
 				var(--canvas) 0 calc(100% - var(--size)),
 				oklab(0% 0 0 / 0) calc(100% - var(--size))
 			),
-			conic-gradient(var(--color) 0 var(--time), var(--canvas) var(--time));
+			conic-gradient(
+				var(--color) 0 var(--arc-clock--time),
+				var(--canvas) var(--arc-clock--time)
+			);
 		animation-timing-function: linear;
 		animation-name: cycle;
 		animation-duration: var(--duration);
