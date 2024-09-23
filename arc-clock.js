@@ -15,8 +15,6 @@ class ArcClock extends HTMLElement {
 			totalHours = 24;
 		}
 
-		shadow.append(div);
-
 		let date = new Date();
 		let seconds = date.getSeconds();
 		let minutes = date.getMinutes() * 60 + seconds;
@@ -26,6 +24,8 @@ class ArcClock extends HTMLElement {
 		div.style.setProperty("--hours-delay", `${-1 * hours}s`);
 		div.style.setProperty("--minutes-delay", `${-1 * minutes}s`);
 		div.style.setProperty("--seconds-delay", `${-1 * seconds}s`);
+
+		shadow.append(div);
 	}
 }
 
