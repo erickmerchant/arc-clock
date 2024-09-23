@@ -9,7 +9,7 @@ class ArcClock extends HTMLElement {
 	connectedCallback() {
 		let shadow = this.shadowRoot;
 		let totalHours = Number(this.getAttribute("total-hours"));
-		let div = document.createElement("div");
+		let div = shadow.querySelector("div");
 
 		if (!totalHours || Number.isNaN(totalHours)) {
 			totalHours = 24;
@@ -24,8 +24,6 @@ class ArcClock extends HTMLElement {
 		div.style.setProperty("--hours-delay", `${-1 * hours}s`);
 		div.style.setProperty("--minutes-delay", `${-1 * minutes}s`);
 		div.style.setProperty("--seconds-delay", `${-1 * seconds}s`);
-
-		shadow.append(div);
 	}
 }
 
