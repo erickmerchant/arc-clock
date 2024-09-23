@@ -6,7 +6,9 @@ window.CSS.registerProperty({
 });
 
 class ArcClock extends HTMLElement {
-	connectedCallback() {
+	constructor() {
+		super();
+
 		let shadow = this.shadowRoot;
 		let totalHours = Number(this.getAttribute("total-hours"));
 		let div = shadow.querySelector("div");
