@@ -19,7 +19,7 @@ body {
 	font-size: 100%;
 }
 
-arc-clock {
+div {
 	min-inline-size: min(30rem, 100svmin);
 	padding: 1em;
 	aspect-ratio: 1;

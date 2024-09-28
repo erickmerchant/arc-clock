@@ -16,7 +16,7 @@
 	padding: 0;
 }
 
-div {
+arc-clock {
 	grid-template-columns: var(--template);
 	grid-template-rows: var(--template);
 	gap: var(--gap);
