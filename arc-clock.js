@@ -1,10 +1,3 @@
-window.CSS.registerProperty({
-	name: "--arc-clock--time",
-	syntax: "<percentage>",
-	inherits: true,
-	initialValue: "0%",
-});
-
 class ArcClock extends HTMLElement {
 	connectedCallback() {
 		let totalHours = Number(this.getAttribute("total-hours"));

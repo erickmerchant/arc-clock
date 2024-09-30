@@ -1,3 +1,19 @@
+@keyframes cycle {
+	0% {
+		--arc-clock--time: 0%;
+	}
+
+	100% {
+		--arc-clock--time: 100%;
+	}
+}
+
+@property --arc-clock--time {
+	syntax: "<percentage>";
+	inherits: true;
+	initial-value: 0%;
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -19,14 +35,64 @@ body {
 	font-size: 100%;
 }
 
-div {
+arc-clock {
 	min-inline-size: min(30rem, 100svmin);
-	padding: 1em;
 	aspect-ratio: 1;
+	grid-template-columns: var(--template);
+	grid-template-rows: var(--template);
+	gap: var(--gap);
 	--size: 2em;
 	--gap: 0.25em;
 	--canvas: Canvas;
 	--hours-color: oklab(90% 0.3 0.2);
 	--minutes-color: oklab(90% -0.1 0.4);
 	--seconds-color: oklab(90% -0.1 -0.4);
+	--color: var(--hours-color);
+	--template: repeat(3, var(--size)) auto repeat(3, var(--size));
+	--duration: var(--hours-duration);
+	--delay: var(--hours-delay);
+
+	&,
+	&::before,
+	&::after {
+		will-change: var(--arc-clock--time);
+		border-radius: 100%;
+		display: grid;
+		aspect-ratio: 1;
+		background: radial-gradient(
+				closest-side,
+				var(--canvas) 0 calc(100% - var(--size)),
+				oklab(0% 0 0 / 0) calc(100% - var(--size))
+			),
+			conic-gradient(
+				var(--color) 0 var(--arc-clock--time),
+				var(--canvas) var(--arc-clock--time)
+			);
+		animation-timing-function: linear;
+		animation-name: cycle;
+		animation-duration: var(--duration);
+		animation-delay: var(--delay);
+		animation-iteration-count: infinite;
+	}
+
+	&::before,
+	&::after {
+		content: "";
+		grid-column: var(--col-row);
+		grid-row: var(--col-row);
+	}
+
+	&::before {
+		--color: var(--minutes-color);
+		--col-row: 2 / -2;
+		--duration: 3600s;
+		--delay: var(--minutes-delay);
+	}
+
+	&::after {
+		--color: var(--seconds-color);
+		--col-row: 3 / -3;
+		--duration: 60s;
+		--delay: var(--seconds-delay);
+	}
 }
