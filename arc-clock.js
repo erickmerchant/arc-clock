@@ -1,20 +1,13 @@
 class ArcClock extends HTMLElement {
 	connectedCallback() {
-		let totalHours = Number(this.getAttribute("total-hours"));
-
-		if (!totalHours || Number.isNaN(totalHours)) {
-			totalHours = 24;
-		}
-
 		let date = new Date();
-		let seconds = date.getSeconds();
-		let minutes = date.getMinutes() * 60 + seconds;
-		let hours = (date.getHours() % totalHours) * 3_600 + minutes;
+		let startTime =
+			(date.getHours() % 12) * 3_600 +
+			(date.getMinutes() * 60 + date.getSeconds());
 
-		this.style.setProperty("--hours-duration", `${totalHours * 3_600}s`);
-		this.style.setProperty("--hours-delay", `${-1 * hours}s`);
-		this.style.setProperty("--minutes-delay", `${-1 * minutes}s`);
-		this.style.setProperty("--seconds-delay", `${-1 * seconds}s`);
+		this.style.setProperty("--arc-clock--start-time", startTime);
+
+		this.toggleAttribute("started");
 	}
 }
 
