@@ -6,8 +6,6 @@ class ArcClock extends HTMLElement {
 			(date.getMinutes() * 60 + date.getSeconds());
 
 		this.style.setProperty("--arc-clock--start-time", startTime);
-
-		this.toggleAttribute("started");
 	}
 }
 

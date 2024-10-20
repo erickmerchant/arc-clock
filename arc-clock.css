@@ -20,7 +20,7 @@
 	initial-value: "";
 }
 
-arc-clock[started] {
+arc-clock {
 	min-inline-size: min(30rem, 100svmin);
 	aspect-ratio: 1;
 	grid-template-columns: var(--template);
@@ -35,7 +35,7 @@ arc-clock[started] {
 	--color: var(--hours-color);
 	--template: repeat(3, var(--size)) auto repeat(3, var(--size));
 	--duration: 43200s;
-	--delay: calc(var(--arc-clock--start-time) * -1s);
+	--delay: calc(var(--arc-clock--start-time, 23430) * -1s);
 
 	&,
 	&::before,
@@ -71,13 +71,13 @@ arc-clock[started] {
 		--color: var(--minutes-color);
 		--col-row: 2 / -2;
 		--duration: 3600s;
-		--delay: calc(mod(var(--arc-clock--start-time), 3600) * -1s);
+		--delay: calc(mod(var(--arc-clock--start-time, 23430), 3600) * -1s);
 	}
 
 	&::after {
 		--color: var(--seconds-color);
 		--col-row: 3 / -3;
 		--duration: 60s;
-		--delay: calc(mod(var(--arc-clock--start-time), 60) * -1s);
+		--delay: calc(mod(var(--arc-clock--start-time, 23430), 60) * -1s);
 	}
 }
